@@ -1,19 +1,5 @@
--- Use this template for your se2222 term project
--- Before submission be sure that your file is named like [your_ID].sql
--- Name: İsmail Altar Ulaş 
--- ID: 18070006027
--- Short description of your scenario:...
--- (Minus 5 of total points if not included)
-
--- 1. Create and use a schema for your project named SE2222_[your_ID]
-
--- 1. Definitions:
--- (15 points)
--- All table definitions of your project including any constraints
--- Before each table creation give a short explanation of the table
-
-CREATE SCHEMA SE2222_18070006027;
-USE SE2222_18070006027;
+CREATE SCHEMA AnimeDatabase;
+USE AnimeDatabase;
 
 /* This table is generally the table that stores the attributes of the anime. Also, anime_id is the primary key.  */
 CREATE TABLE anime(
@@ -28,8 +14,7 @@ source_anime VARCHAR(20),
 rating INT
 );
 
-/* ALTER operation here is done to insert the studio id, which is a foreign key, into the anime.  
-   (Burdaki ALTER işlemi animenin içine foreign key olan studio_id yi atmak için yapılmıştır) */
+/* ALTER operation here is done to insert the studio id, which is a foreign key, into the anime. */
 
 ALTER TABLE anime
 ADD FOREIGN KEY (studio_id)
@@ -56,8 +41,10 @@ broadcast VARCHAR(20),
 PRIMARY KEY(anime_id),
 CONSTRAINT date_anime_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (anime_id) ON DELETE CASCADE
 );
+
 /* Is there a translation of the published anime in these regions or not (exist or not exist).
 and anime_id is both primary and foreign key  */
+
 CREATE TABLE religion_language(
 anime_id INT,
 japanese VARCHAR(20),
@@ -69,6 +56,7 @@ CONSTRAINT religion_language_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (a
 );
 
 /* The statistic table is the table that stores the statistics of the anime and anime_id serves as both a primary key and a foreign key. */
+
 CREATE TABLE statistic(
 anime_id INT,
 score DECIMAL(3,2),
@@ -129,17 +117,8 @@ PRIMARY KEY(anime_id),
 CONSTRAINT music_studio_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (anime_id) ON DELETE CASCADE
 );
 
-
--- 2. Insertions(Data manipulation):
--- (15 points)
--- For each table, add enough number of rows to make your queries in step three to produce meaningful result sets.
-
-
 /* The reason why UPDATE is used after each row when inserting into the anime table is that, the studio table has not been created yet and therefore 
-the studio_id part is initially. It is because it remains NULL. Later, we correct this by UPDATE the NULL part in each row. 
-
-(Anime table'ına insert yaparken her row dan sonra UPDATE kullanılmasının nedeni studio table'nın daha oluşmaması ve dolayısıyla studio_id kısmının ilk başta 
-NULL olarak kalıyor olmasındandır. Daha sonrasında her row içindeki NULL kısmını UPDATE ederek bunu düzeltiyoruz) */
+the studio_id part is initially. It is because it remains NULL. Later, we correct this by UPDATE the NULL part in each row. */
 
 INSERT INTO anime VALUES(1,'Akame ga Kill', NULL , 'TV', 'Fantasy', 24, 23, 'manga', 17);
 UPDATE anime
@@ -219,19 +198,6 @@ INSERT INTO music_studio VALUES(2, 'Hinata', 'One K');
 INSERT INTO music_studio VALUES(3, 'Aria', 'It goes down');
 INSERT INTO music_studio VALUES(4, 'Chelsea', 'Katedral');
 INSERT INTO music_studio VALUES(5, 'Hana', 'Bullets and roses');
-
-
--- 3. Queries:
--- (15 points)
--- Write 5 queries with explanations 
--- Write 5 queries. Your queries should do a task that is meaningful in your selected context (project topic). 
--- At least one that joins two or more tables
--- At least one that include group functions
--- At least one with one or more sub-query(es)
--- At least one update
--- At least one delete
--- At least one include arithmetic functions
--- At least one uses alias
 
 /* Here, combining join, arithmetic functions and group functions, combining anime and studio tables, where the id's are the same. Also, I printed 
 the anime_id in decreasing order  */
