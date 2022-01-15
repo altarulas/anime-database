@@ -16,11 +16,6 @@ rating INT
 
 /* ALTER operation here is done to insert the studio id, which is a foreign key, into the anime. */
 
-ALTER TABLE anime
-ADD FOREIGN KEY (studio_id)
-REFERENCES studio(studio_id)
-ON DELETE SET NULL;
-
 /* The studio table is the table that holds the animation's studio information and where studio_id is the primary key.  */
 CREATE TABLE studio(
 studio_id INT PRIMARY KEY,
@@ -30,6 +25,12 @@ producer_name VARCHAR(30),
 licensor_name VARCHAR(20),
 CONSTRAINT studio_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (anime_id) ON DELETE CASCADE
 );
+
+ALTER TABLE anime
+ADD FOREIGN KEY (studio_id)
+REFERENCES studio(studio_id)
+ON DELETE SET NULL;
+
 
 /* In the date_anime table, the anime_id is both a primary key and a foreign key. The table shows which anime on which date.  */
 CREATE TABLE date_anime(
@@ -69,6 +70,7 @@ CONSTRAINT statistic_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (anime_id)
 );
 
 /* summary stats table stores viewers' statistics and anime_id is both primary key and foreign key  */
+
 CREATE TABLE summary_stats(
 anime_id INT,
 watching DECIMAL(7,4),
@@ -82,6 +84,7 @@ CONSTRAINT summary_stats_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (anime
 );
 
 /* The studio address table stores the address information of the studio, where studio_id is both primary and foreign key.  */
+
 CREATE TABLE studio_adress(
 studio_id INT,
 city VARCHAR(20),
@@ -91,6 +94,7 @@ CONSTRAINT studio_adress_anime_FK FOREIGN KEY (studio_id) REFERENCES studio (stu
 );
 
 /* The anime characters table stores the main characters and id's of the anime, anime_id here acts as both primary and foreign key.  */
+
 CREATE TABLE anime_characters(
 anime_id INT,
 main_character_name VARCHAR(20),
@@ -99,6 +103,7 @@ CONSTRAINT anime_characters_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (an
 );
 
 /* Voice actors stores the information of those who are voicing the animen characters, and anime_id is both primary and foreign key here.  */
+
 CREATE TABLE voice_actors(
 anime_id INT,
 main_character_voice_actor VARCHAR(30),
@@ -109,6 +114,7 @@ CONSTRAINT voice_actors_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (anime_
 );
 
 /* The music_studio table contains the information of the groups that make the music of the anime, where anime_id works as both primary and foreign key.  */
+
 CREATE TABLE music_studio(
 anime_id INT,
 singer VARCHAR(30),
@@ -118,32 +124,14 @@ CONSTRAINT music_studio_anime_FK FOREIGN KEY (anime_id) REFERENCES anime (anime_
 );
 
 /* The reason why UPDATE is used after each row when inserting into the anime table is that, the studio table has not been created yet and therefore 
-the studio_id part is initially. It is because it remains NULL. Later, we correct this by UPDATE the NULL part in each row. */
+the studio_id part is initially. It is because it remains NULL. Later, we correct this by UPDATE the NULL part in each row.  */
+
 
 INSERT INTO anime VALUES(1,'Akame ga Kill', NULL , 'TV', 'Fantasy', 24, 23, 'manga', 17);
-UPDATE anime
-SET studio_id = 10
-WHERE anime_id = 1;
-
 INSERT INTO anime VALUES(2,'Naruto', NULL ,'TV', 'Shounen', 220, 23, 'manga', 13);
-UPDATE anime
-SET studio_id = 20
-WHERE anime_id = 2;
-
 INSERT INTO anime VALUES(3,'Hunter X Hunter', NULL , 'TV', 'Action', 148, 23, 'manga', 13);
-UPDATE anime
-SET studio_id = 30
-WHERE anime_id = 3;
-
 INSERT INTO anime VALUES(4,'Ginga Eiyuu Densetsu', NULL , 'TV', 'Military', 110, 23, 'novel', 17);
-UPDATE anime
-SET studio_id = 40
-WHERE anime_id = 4;
-
 INSERT INTO anime VALUES(5,'Death Note', NULL , 'TV', 'Supernatural', 37, 23, 'manga', 17);
-UPDATE anime
-SET studio_id = 50
-WHERE anime_id = 5;
 
 INSERT INTO studio VALUES(10, 1, 'White Fox', 'Square Enix', 'Sentai Filmworks');
 INSERT INTO studio VALUES(20, 2, 'Studio Pierrot', 'TV Tokyo', 'VIZ Media');
